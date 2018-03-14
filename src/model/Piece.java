@@ -23,6 +23,10 @@ public abstract class Piece {
 		return owner;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	protected ArrayList<Square> checkDirection(Square location, int xDirection, int yDirection) {
 		ArrayList<Square> possibleMoves = new ArrayList<Square>();
 		Square current = location;

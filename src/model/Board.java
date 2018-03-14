@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
@@ -89,6 +90,7 @@ public class Board {
 		while (!source.getPiece().possibleMoves(source).contains(target)) {
 			if (target.isOwner(player))
 				source = target;
+			// check for check
 			target = selectSquare("Select target");
 		}
 		
@@ -136,6 +138,35 @@ public class Board {
 		}
 		
 		return s;
+	}
+	
+	private ArrayList<Square> getOpponentPieces(Player player) {
+		ArrayList<Square> pieces = new ArrayList<Square>();
+		for (Square [] row : board) {
+			for (Square square : row) {
+				if (square.isOpponent(player))
+					pieces.add(square);
+			}
+		}
+		return pieces;
+	}
+	
+	private boolean isInCheck(Square king) {
+		ArrayList<Square> moveList = new ArrayList<Square>();
+		for (Square square : getOpponentPieces(king.getPiece().getOwner())) {
+			moveList.addAll(square.getPiece().possibleMoves(square));
+		}
+		return moveList.contains(king);
+	}
+	
+	private Square findKing(Player player) {
+		for (Square [] row : board) {
+			for (Square square : row) {
+				if (square.getPiece().getName().equals("King") && square.isOwner(player))
+					return square;
+			}
+		}
+		return null;
 	}
 	
 }
